@@ -347,6 +347,7 @@ class DataKit:
         return seq
 
     def batch_predict(self, text, id):
+        print("[INFO]Batch Predict Start:...")
         text4analysis, idList = self.duplicateCheck(id, text)
 
         samples = []
@@ -583,7 +584,7 @@ if __name__=="__main__":
     dataKit = DataKit()
     dataKit.sentimentInital()
     #finalRes, comments = dataKit.getRawData("2018-01-01 00:00:00", "2018-01-01 00:30:00", 27684)
-    start = datetime.datetime(2018, 3, 18, 18, 0, 0)
+    start = datetime.datetime(2018, 1, 1, 0, 0, 0)
     delta = datetime.timedelta(hours=1)
     end = start+delta    
     now = datetime.datetime.now()
