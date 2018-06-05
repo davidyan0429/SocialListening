@@ -2,6 +2,6 @@
 .DS_Store
 Configuration.ini
 API_ruleID_list.xlsx
-
+nohup.out
 # Can also ignore all directories and files in a directory.
 .vscode/*
