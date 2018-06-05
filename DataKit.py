@@ -32,6 +32,7 @@ class DataKit:
             "711": "windows",
             "3081": "Office"
         }
+
         self.RuleIdNames = {
             # xbox
             "81081": "xpa",
@@ -53,6 +54,10 @@ class DataKit:
             "105321": "微软平板",
             "105322": "微软苏菲",
             "105323": "苏菲平板",
+            "23334": "surface laptop",
+            "23338": "surface book",
+            "23342": "surface studio",
+            "28360": "surface pro",
 
             # 竞品
             "27684": "macbook",
@@ -84,7 +89,7 @@ class DataKit:
             #"81090", "81091", "81089", "81086", "81087", "81092",
 
             # Surface
-            "23333", "105321", "105322", "105323",
+            "23334", "23338", "23342", "28360",
 
             # 竞品
             #"27684", "105324", "105325", "105326",
@@ -103,7 +108,7 @@ class DataKit:
                 "81086", "81087", "81092"
             ],
             "708":[
-                "23333", "105321", "105322", "105323"
+                "23333", "105321", "105322", "105323", "23338", "23342", "28360", "23334"
             ],
             "2926":[
                 "27684", "105324", "105325", "105326"
@@ -117,29 +122,9 @@ class DataKit:
             ]
         }
 
+
         self.Platforms = ["weibo", "weixin", "blog", "wenda", "news"]
 
-        '''
-        self.Cols = {
-            "projectID":0,"id":1,"platform":2,"publishedAt":3,"topic":4,
-            "url":5,"content":6,"source":7,"commentSentiment":8,"score":9,
-            "viewCount":10,"likeCount":11,"commentCount":12,"repostCount":13,
-            "interactCount":14,"haslink":15,"isOriginal":16,"postFrom":17,
-            "nickName":18,"uid":19,"profileImageUrl":20,"gender":21,"province":22,
-            "city":23,"description":24,"friendCount":25,"followerCount":26,
-            "statusCount":27,"favouriteCount":28,"biFollowerCount":29,
-            "createdAt":30,"verified":31,"verifiedType":32,"verifiedReason":33,
-            "ugc":34,"pbw":35,"originalID":36,"originalPublishedAt":37,
-            "originalContent":38,"originalSource":39,"originalCommentCount":40,
-            "originalRepostCount":41,"originalLikeCount":42,"originalPostFrom":43,
-            "originalUID":44,"originalNickName":45,"originalVerified":46,
-            "isDeleted":47,"spam":48,"images":49,"originalImages":50,"rule":51,
-            "rewardCount":52,"isReward":53,"title":54,"indexid":55,"author":56,
-            "digest":57,"userName":58,"biz":59,"account":60,"codeImageUrl":61,
-            "openid":62,"originalUrl":63,"channel":64,"secondChannel":65,
-            "thirdChannel":66,"floor":67,"isComment":68,"isEssence":69,"userUrl":70,"userLevel":71
-        }
-        '''
         self.Cols = [
             "projectID", "id", "platform","publishedAt","topic",
             "url","content","source","commonSentiment","score",
@@ -282,18 +267,6 @@ class DataKit:
             terms = line.split('\t')
             class2_class1[terms[0]] = terms[1]
         return class2_class1
-
-    '''
-    def predict(self, text, dict, model, ID2label):
-        seq = self.text_to_sequence(text, dict)
-        sequences = []
-        sequences.append(seq)
-        X = pad_sequences(sequences, maxlen=100)
-        preds = model.predict(X, batch_size=10000, verbose=0)
-        labels_pred = self.probs2label(preds)
-        label = ID2label[labels_pred[0]]
-        return label
-    '''
 
     def predict(self, texts, dict, model, ID2label):
         sen2text = []
@@ -481,10 +454,8 @@ class DataKit:
         params = {}
         params["platforms"] = self.Platforms
         params["metrics"] = ["volume"]
-        #params["endDate"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         params["endDate"] = endDate
         params["dimensions"] = []
-        #params["startDate"] = (datetime.datetime.now()-datetime.timedelta(days=15)).strftime("%Y-%m-%d %H:%M:%S")
         params["startDate"] = startDate
         params["action"] = "query"
         params["ruleId"] = ruleId
