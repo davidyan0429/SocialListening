@@ -17,6 +17,7 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.models import load_model
 
 import pyodbc
+import tzlocal
 
 class DataKit:
     
@@ -551,14 +552,13 @@ def datetimeToStr(dt):
     return strDt
 
 if __name__=="__main__":
-    #print("Get Data from ADMASTER API:")
+    tz = pytz.timezone('Asia/Shanghai')
     dataKit = DataKit()
     dataKit.sentimentInital()
-    #finalRes, comments = dataKit.getRawData("2018-01-01 00:00:00", "2018-01-01 00:30:00", 27684)
-    start = datetime.datetime(2018, 6, 8, 6, 0, 0)
+    start = datetime.datetime(2018, 6, 12, 7, 0, 0, tzinfo=tz)
     delta = datetime.timedelta(hours=1)
     end = start+delta    
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(tz)
 
     while (now > start):
         print(start)        
