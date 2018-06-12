@@ -17,7 +17,6 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.models import load_model
 
 import pyodbc
-import tzlocal
 
 class DataKit:
     
@@ -560,8 +559,7 @@ if __name__=="__main__":
     end = start+delta    
     now = datetime.datetime.now(tz)
 
-    while (now > start):
-        print(start)        
+    while (now > end):
         finalRes, comments = dataKit.getRawDataByRuleIds(datetimeToStr(start), datetimeToStr(end), 10000)
         numberOfdata = len(finalRes)
         try:
@@ -589,4 +587,4 @@ if __name__=="__main__":
         finally:
             start = end
             end = start + delta
-            now = datetime.datetime.now()
+            now = datetime.datetime.now(tz)
