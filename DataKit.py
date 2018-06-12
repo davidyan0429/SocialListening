@@ -17,6 +17,7 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.models import load_model
 
 import pyodbc
+from threading import Timer
 
 class DataKit:
     
@@ -550,14 +551,14 @@ def datetimeToStr(dt):
         + str(dt.day) + " " + str(dt.hour) + ":" + str(dt.minute) + ":" + str(dt.second)
     return strDt
 
-if __name__=="__main__":
+def main():
     tz = pytz.timezone('Asia/Shanghai')
     dataKit = DataKit()
     dataKit.sentimentInital()
-    start = datetime.datetime(2018, 6, 12, 7, 0, 0, tzinfo=tz)
-    delta = datetime.timedelta(hours=1)
-    end = start+delta    
     now = datetime.datetime.now(tz)
+    end = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0, tzinfo=tz)  
+    delta = datetime.timedelta(hours=1)  
+    start = end - delta
 
     while (now > end):
         finalRes, comments = dataKit.getRawDataByRuleIds(datetimeToStr(start), datetimeToStr(end), 10000)
@@ -588,3 +589,10 @@ if __name__=="__main__":
             start = end
             end = start + delta
             now = datetime.datetime.now(tz)
+
+    global t
+    t = Timer(3600, main)  
+    t.start()
+
+if __name__=="__main__":
+    main()
