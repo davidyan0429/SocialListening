@@ -439,7 +439,7 @@ class DataKit:
         return headers
 
     def getRawDataByRuleIds(self, startDate, endDate, maxResults = 10):
-        print("[INFO] get raw data by rule ids...")
+        print("[INFO] get raw data by rule ids... from "+startDate+" to "+endDate)
         finalRes = []
         comments = []
         for id in self.RuleIds:
@@ -551,15 +551,17 @@ def datetimeToStr(dt):
         + str(dt.day) + " " + str(dt.hour) + ":" + str(dt.minute) + ":" + str(dt.second)
     return strDt
 
-def main():
+def main(dataKit):
     tz = pytz.timezone('Asia/Shanghai')
-    dataKit = DataKit()
-    dataKit.sentimentInital()
+    #dataKit = DataKit()
+    #dataKit.sentimentInital()
     now = datetime.datetime.now(tz)
     end = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0, tzinfo=tz)  
+    #start = datetime.datetime(2018, 6, 13, 12, 0, 0, tzinfo=tz)
     delta = datetime.timedelta(hours=1)  
     start = end - delta
-
+    print("[INFO] time is " + datetimeToStr(now))
+    print("[INFO] end time is " + datetimeToStr(end))
     while (now > end):
         finalRes, comments = dataKit.getRawDataByRuleIds(datetimeToStr(start), datetimeToStr(end), 10000)
         numberOfdata = len(finalRes)
@@ -575,6 +577,7 @@ def main():
             dataKit.sqlDisconnect()
             row = [row[i][0] for i in range(numberOfdata)]
             id = row[::-1]
+            print("[INFO] The number of comments is " + str(len(comments)))
             if (len(comments) == len(id)):
                 sentiments = dataKit.batch_predict(comments, id)
                 # write sentiments to table sentiment
@@ -591,8 +594,10 @@ def main():
             now = datetime.datetime.now(tz)
 
     global t
-    t = Timer(3600, main)  
+    t = Timer(3600, main, [dataKit])  
     t.start()
 
 if __name__=="__main__":
-    main()
+    dataKit = DataKit()
+    dataKit.sentimentInital()    
+    main(dataKit)
