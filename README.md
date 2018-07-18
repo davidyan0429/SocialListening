@@ -26,3 +26,4 @@ On Azure, we can use cognitive services - text analysis api to get sentimental a
    * [predict_comments_batch.py](./predict_comments_batch.py) Batch Prediction with Pretrained Classification and Sentimental Analysis Models
    * [predict_comments.py](./predict_comments.py) Prediction with Pretrained Classification and Sentimental Analysis Models
    * [requirements.txt](./requirements.txt)  
+   * [SocialListening_DLTrain](https://github.com/davidyan0429/SocialListening_DLTrain) Training Template for classification and sentiment analysis.
